@@ -12,6 +12,7 @@ describe('Vain', function() {
     vain.unregisterSnippet.should.be.a('function');
     vain.render.should.be.a('function');
     vain.renderFile.should.be.a('function');
+    vain.responseMiddleware.should.be.a('function');
     vain.__express.should.be.a('function');
   });
 
