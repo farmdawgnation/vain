@@ -1,7 +1,8 @@
 'use strict';
 
 var chai = require('chai'),
-    vain = require('./../lib/vain');
+    vain = require('./../lib/vain'),
+    fs = require('fs');
 
 chai.should();
 
@@ -81,6 +82,15 @@ describe('Vain', function() {
       var renderResult = vain.render(startMarkup);
 
       renderResult.should.equal(expectedMarkup);
+    });
+  });
+
+  describe(".renderFile", function() {
+    it("should correctly render a full HTML file on the file system", function() {
+      var inputFilePath = './examples/render-input.html',
+          expectedOuput = fs.readFileSync('./examples/render-output.html');
+
+      vain.render(inputFilePath).should.equal(expectedOuput);
     });
   });
 });
