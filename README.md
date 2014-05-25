@@ -117,5 +117,5 @@ Vain exposes the following methods:
 
 My name is **Matt Farmer**. I'm a Software Engineer in Atlanta, GA, hacking on things for
 [Elemica](http://elemica.com) by day, and hacking on my own things for [Crazy Goat Creative](http://crazygoatcreative.com)
-by night. You can read my thoughts on my blog, [Farmdawg Nation](http://farmdawgnation.com)
-and follow my 140-character mindstream [@farmdawgnation](http://twitter.com/farmdawgnation).
+by night. You can read my thoughts on my blog, [Farmdawg Nation](http://farmdawgnation.com),
+and follow my 140-character mindstream, [@farmdawgnation](http://twitter.com/farmdawgnation).
