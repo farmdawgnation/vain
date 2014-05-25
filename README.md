@@ -29,8 +29,11 @@ var express = require('express'),
     app = express(),
     vain = require('vain');
 
-// with your settings
+// To use a .vain extension.
 app.set('view engine', vain);
+
+// To use an .html extension
+app.engine('html', vain.__express);
 ```
 
 ### Integration Option 2: Response middleware
