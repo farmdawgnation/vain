@@ -9,6 +9,7 @@ chai.should();
 describe('Vain', function() {
   it('should export the correct properties', function() {
     vain.registerSnippet.should.be.a('function');
+    vain.unregisterSnippet.should.be.a('function');
     vain.render.should.be.a('function');
     vain.renderFile.should.be.a('function');
     vain.__express.should.be.a('function');
