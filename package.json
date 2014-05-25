@@ -1,0 +1,24 @@
+{
+  "name": "vain-node",
+  "version": "0.0.1",
+  "description": "A view-first templating enging for Node.js / Express.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/farmdawgnation/vain-node.git"
+  },
+  "keywords": [
+    "template",
+    "view",
+    "first"
+  ],
+  "author": "Matt Farmer <matt@frmr.me>",
+  "license": "Apache 2",
+  "bugs": {
+    "url": "https://github.com/farmdawgnation/vain-node/issues"
+  },
+  "homepage": "https://github.com/farmdawgnation/vain-node"
+}
