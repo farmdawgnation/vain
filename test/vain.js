@@ -61,5 +61,19 @@ describe('Vain', function() {
 
       renderResult.should.equal(expectedMarkup);
     });
+
+    it('should run snippets from the global snippet registry', function() {
+      var startMarkup = '<a href="http://google.com" data-vain="globally-registered">Google</a>',
+          expectedMarkup = '<a href="http://google.com" class="fancy">Google</a>',
+          snippetHandler = function($, element) {
+            $(element).addClass("fancy");
+          };
+
+      vain.registerSnippet("globally-registered", snippetHandler);
+
+      var renderResult = vain.render(startMarkup);
+
+      renderResult.should.equal(expectedMarkup);
+    });
   });
 });
