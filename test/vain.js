@@ -6,6 +6,13 @@ var chai = require('chai'),
 chai.should();
 
 describe('Vain', function() {
+  it('should export the correct properties', function() {
+    vain.registerSnippet.should.be.a('function');
+    vain.render.should.be.a('function');
+    vain.renderFile.should.be.a('function');
+    vain.__express.should.be.a('function');
+  });
+
   describe('.render', function() {
     it('should return the same markup if no snippets were invoked', function() {
       var startMarkup = '<a href="http://google.com">Google <span>A search engine.</span></a>',
