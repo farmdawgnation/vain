@@ -87,10 +87,26 @@ describe('Vain', function() {
 
   describe(".renderFile", function() {
     it("should correctly render a full HTML file on the file system", function() {
-      var inputFilePath = './examples/render-input.html',
-          expectedOuput = fs.readFileSync('./examples/render-output.html');
+      var inputFilePath = './test/examples/render-input.html',
+          expectedOuput = fs.readFileSync('./test/examples/render-output.html', 'utf8');
 
-      vain.render(inputFilePath).should.equal(expectedOuput);
+      vain.registerSnippet('page-title', function($, element) {
+        $(element).text("Welcome to vain");
+      });
+
+      vain.registerSnippet("page-header", function($, element) {
+        $(element).text("Welcome to vain");
+      });
+
+      vain.registerSnippet("page-content", function($, element) {
+        $(element)
+          .attr("id", "content")
+          .text("Welcome to vain, a view first templating engine / middleware for Node.");
+      });
+
+      var renderResult = vain.renderFile(inputFilePath);
+
+      renderResult.should.equal(expectedOuput);
     });
   });
 });
