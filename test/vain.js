@@ -35,5 +35,31 @@ describe('Vain', function() {
 
       renderResult.should.equal(expectedMarkup);
     });
+
+    it('should correctly transform nested markup', function() {
+      var startMarkup = '<section data-vain="parent"><h1>I like robots.</h1> <p data-vain="child">I really enjoy robots.</p></section>',
+          expectedMarkup = '<section class="cheese"><h1 class="pig">I like robots.</h1> <p class="sauce enjoy">I really enjoy robots.</p></section>';
+
+      var parentHandler = function($, element) {
+        $(element)
+          .addClass("cheese")
+          .find("h1")
+            .addClass("pig")
+            .end()
+          .find("p")
+            .addClass("sauce");
+      }
+
+      var childHandler = function($, element) {
+        $(element).addClass("enjoy");
+      }
+
+      var renderResult = vain.render(startMarkup, {snippets: {
+        'parent': parentHandler,
+        'child': childHandler
+      }});
+
+      renderResult.should.equal(expectedMarkup);
+    });
   });
 });
