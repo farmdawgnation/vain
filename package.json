@@ -1,26 +1,27 @@
 {
   "name": "vain",
   "version": "0.0.1",
-  "description": "A view-first templating enging for Node.js / Express.",
+  "description": "A view-first template engine / middleware for Node.js and Express.",
   "main": "index.js",
   "scripts": {
     "test": "node_modules/mocha/bin/mocha"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/farmdawgnation/vain-node.git"
+    "url": "https://github.com/farmdawgnation/vain.git"
   },
   "keywords": [
     "template",
+    "view first",
     "view",
-    "first"
+    "vain"
   ],
   "author": "Matt Farmer <matt@frmr.me>",
   "license": "Apache 2",
   "bugs": {
-    "url": "https://github.com/farmdawgnation/vain-node/issues"
+    "url": "https://github.com/farmdawgnation/vain/issues"
   },
-  "homepage": "https://github.com/farmdawgnation/vain-node",
+  "homepage": "https://github.com/farmdawgnation/vain",
   "dependencies": {
     "jsdom": "0.10.5",
     "jquery": "2.1.1"
