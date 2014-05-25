@@ -1,6 +1,6 @@
 {
   "name": "vain",
-  "version": "0.0.1",
+  "version": "0.0.2-SNAPSHOT",
   "description": "A view-first template engine / middleware for Node.js and Express.",
   "main": "index.js",
   "scripts": {
