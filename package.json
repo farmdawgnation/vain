@@ -1,5 +1,5 @@
 {
-  "name": "vain-node",
+  "name": "vain",
   "version": "0.0.1",
   "description": "A view-first templating enging for Node.js / Express.",
   "main": "index.js",
