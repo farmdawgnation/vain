@@ -6,6 +6,9 @@ blocks for a clean separation between view concerns and logic concerns. Using va
 some sets of functions to certain names, such as "page-title", then use `data-vain` attributes in
 your markup to invoke the function on that HTML element and its children.
 
+If you want to see it in action, you can look at the code in my [vain-test](https://github.com/farmdawgnation/vain-test)
+repository. Check out app.js for the good stuff.
+
 **Vain is currently in alpha. It may not function as you expect, or even function at all. Any
 help in finding a filing bugs is appreciated!**
 
