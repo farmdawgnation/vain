@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/farmdawgnation/vain-node/issues"
   },
-  "homepage": "https://github.com/farmdawgnation/vain-node"
+  "homepage": "https://github.com/farmdawgnation/vain-node",
+  "dependencies": {
+    "jquery": "2.1.1"
+  }
 }
