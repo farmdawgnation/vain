@@ -24,5 +24,16 @@ describe('Vain', function() {
           },
           renderResult = vain.render(startMarkup, {snippets: {'test': snippetHandler}});
     });
+
+    it('should return transformed node markup', function() {
+      var startMarkup = '<a href="http://google.com" data-vain="test">Google</a>',
+          expectedMarkup = '<a href="http://google.com" class="fancy">Google</a>',
+          snippetHandler = function($, element) {
+            $(element).addClass("fancy");
+          },
+          renderResult = vain.render(startMarkup, {snippets: {'test': snippetHandler}});
+
+      renderResult.should.equal(expectedMarkup);
+    });
   });
 });
