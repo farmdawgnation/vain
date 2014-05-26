@@ -111,4 +111,19 @@ describe('Vain', function() {
       renderResult.should.equal(expectedOuput);
     });
   });
+
+  describe(".router", function() {
+    it("should dispatch for valid paths", function(done) {
+      var testPath = '/render-input',
+          router = vain.router("./test/examples"),
+          res = {
+            render: function(val) {
+              val.should.equal('./test/examples/render-input.html');
+              done()
+            }
+          };
+
+      router.handle({ url: testPath, method: 'GET', next: done }, res);
+    });
+  });
 });
