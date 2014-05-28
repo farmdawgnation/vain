@@ -118,6 +118,8 @@ Vain exposes the following methods:
     invocation.
 * **renderFile(path, options, fn)** - Exactly the same as render, except that it operates on a file path.
 * **reponseMiddleware(req, res, next)** - Middleware function that can be `app.use`d directly.
+* **router(viewsFolder)** - The vain router, which will work for any HTML file under your viewsFolder specified
+  when you create the router. Should be the last router in the chain.
 
 ## Who am I?
 
