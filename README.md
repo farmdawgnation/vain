@@ -1,5 +1,7 @@
 # Vain
 
+![build status](https://api.travis-ci.org/farmdawgnation/vain.png)
+
 **Vain** is a view-first middleware and simplistic templating engine for Node.js / Express
 applications. Inspired by the [Lift Framework](http://liftweb.net), vain gives you the building
 blocks for a clean separation between view concerns and logic concerns. Using vain, you can register
