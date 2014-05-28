@@ -119,11 +119,15 @@ describe('Vain', function() {
           res = {
             render: function(val) {
               val.should.equal('./test/examples/render-input.html');
-              done()
+              done();
+            },
+
+            send: function(code) {
+              done("Template was not found.");
             }
           };
 
-      router.handle({ url: testPath, method: 'GET', next: done }, res);
+      router.handle({ url: testPath, method: 'GET', path: testPath}, res);
     });
   });
 });
