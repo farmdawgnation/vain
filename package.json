@@ -23,12 +23,12 @@
   },
   "homepage": "https://github.com/farmdawgnation/vain",
   "dependencies": {
-    "jsdom": "0.10.5",
-    "jquery": "2.1.1",
-    "express": "4.3.1"
+    "jsdom": "0.10.x",
+    "jquery": "2.1.x",
+    "express": "4.3.x"
   },
   "devDependencies": {
-    "mocha": "1.19.0",
-    "chai": "1.9.1"
+    "mocha": "1.19.x",
+    "chai": "1.9.x"
   }
 }
