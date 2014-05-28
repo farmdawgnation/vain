@@ -129,5 +129,22 @@ describe('Vain', function() {
 
       router.handle({ url: testPath, method: 'GET', path: testPath}, res);
     });
+
+    it("should return a 404 for invalid paths", function(done) {
+      var testPath = '/nonexistent-path',
+          router = vain.router("./test/examples"),
+          res = {
+            render: function(val) {
+              done("Render was invoked.");
+            },
+
+            send: function(code) {
+              code.should.equal(404);
+              done();
+            }
+          };
+
+      router.handle({ url: testPath, method: 'GET', path: testPath}, res);
+    });
   });
 });
