@@ -4,7 +4,7 @@
   "description": "A view-first template engine / middleware for Node.js and Express.",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/mocha/bin/mocha"
+    "test": "node_modules/mocha/bin/mocha -R spec"
   },
   "repository": {
     "type": "git",
