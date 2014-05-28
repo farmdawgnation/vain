@@ -51,7 +51,7 @@ var express = require('express'),
 
 // some settings...
 app.use(app.router);
-app.use(vain.middleware);
+app.use(vain.responseMiddleware);
 ```
 
 In this configuration, vain will operate on the response output produced by your routing code.
