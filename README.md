@@ -1,6 +1,7 @@
 # Vain
 
 ![build status](https://api.travis-ci.org/farmdawgnation/vain.png)
+[![Dependency Status](https://gemnasium.com/farmdawgnation/vain.svg)](https://gemnasium.com/farmdawgnation/vain)
 
 **Vain** is a view-first middleware and simplistic templating engine for Node.js / Express
 applications. Inspired by the [Lift Framework](http://liftweb.net), vain gives you the building
