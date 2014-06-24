@@ -17,47 +17,18 @@ help in finding a filing bugs is appreciated!**
 
 ## Using Vain
 
-Vain can be dropped into your Express (or other) stack in one of two ways:
+Vain is ideally integrated by using the vain router. The vain router will search for HTML files in your views
+folder that matches the path the user is trying to access. If one is found, it will run the HTML template through
+vain and send the output to the browser. So, for example, if the user is trying to access the URL "/admin/users"
+and you configured the vain router to use "views" as its `viewsFolder`, then it will look for the HTML file
+"views/admin/users.html" and render it, processing any `data-vain` attributes it finds, then return that result
+to the client.
 
-* As a drop-in templating engine used by Express.
-* As a response middleware, added to the stack by calling `app.use` after your router.
-
-Given the lack of native support for things like embedding templates for the moment, you may
-find it preferable to do the latter. After you've decided how you want to integrate it, you
-can start registering snippets.
-
-### Integration Option 1: View engine.
-
-You can set vain as your default template engine by using `app.set` in your Express application.
+Such a configuration would be accomplished by adding the following line to your app.js in your express app:
 
 ```javascript
-var express = require('express'),
-    app = express(),
-    vain = require('vain');
-
-// To use a .vain extension.
-app.set('view engine', vain);
-
-// To use an .html extension
-app.engine('html', vain.__express);
+app.use('/', vain.router(app.get('views')));
 ```
-
-### Integration Option 2: Response middleware
-
-You can alternately have vain integrate as middleware that runs after your router, and use a different
-view engine altogether.
-
-```javascript
-var express = require('express'),
-    app = express(),
-    vain = require('vain');
-
-// some settings...
-app.use(app.router);
-app.use(vain.responseMiddleware);
-```
-
-In this configuration, vain will operate on the response output produced by your routing code.
 
 ### Registering Snippets
 
