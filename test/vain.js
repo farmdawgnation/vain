@@ -84,6 +84,16 @@ describe('Vain', function() {
 
       renderResult.should.equal(expectedMarkup);
     });
+
+    it('should pass params into snippets', function(callback) {
+      var startMarkup = '<a href="http://google.com" data-vain="test?one=1&two=2">Google <span>A search engine.</span></a>',
+          snippetHandler = function($, element, req, res, params) {
+            params.one.should.equal("1");
+            params.two.should.equal("2");
+            callback();
+          },
+          renderResult = vain.render(startMarkup, {snippets: {'test': snippetHandler}});
+    });
   });
 
   describe(".renderFile", function() {
