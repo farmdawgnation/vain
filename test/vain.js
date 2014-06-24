@@ -11,8 +11,8 @@ describe('Vain', function() {
     vain.registerSnippet.should.be.a('function');
     vain.unregisterSnippet.should.be.a('function');
     vain.render.should.be.a('function');
-    vain.renderFile.should.be.a('function');
-    vain.responseMiddleware.should.be.a('function');
+    vain.htmlRenderer.should.be.a('function');
+    vain.middleware.should.be.a('function');
     vain.__express.should.be.a('function');
   });
 
@@ -85,28 +85,24 @@ describe('Vain', function() {
 
       renderResult.should.equal(expectedMarkup);
     });
+
+    it('should pass params into snippets', function(callback) {
+      var startMarkup = '<a href="http://google.com" data-vain="test?one=1&two=2">Google <span>A search engine.</span></a>',
+          snippetHandler = function($, element, req, params) {
+            params.one.should.equal("1");
+            params.two.should.equal("2");
+            callback();
+          },
+          renderResult = vain.render(startMarkup, {snippets: {'test': snippetHandler}});
+    });
   });
 
-  describe(".renderFile", function() {
-    it("should correctly render a full HTML file on the file system", function() {
+  describe(".htmlRenderer", function() {
+    it("should return an html file verbatim", function() {
       var inputFilePath = './test/examples/render-input.html',
-          expectedOuput = fs.readFileSync('./test/examples/render-output.html', 'utf8');
+          expectedOuput = fs.readFileSync('./test/examples/render-input.html', 'utf8');
 
-      vain.registerSnippet('page-title', function($, element) {
-        $(element).text("Welcome to vain");
-      });
-
-      vain.registerSnippet("page-header", function($, element) {
-        $(element).text("Welcome to vain");
-      });
-
-      vain.registerSnippet("page-content", function($, element) {
-        $(element)
-          .attr("id", "content")
-          .text("Welcome to vain, a view first templating engine / middleware for Node.");
-      });
-
-      var renderResult = vain.renderFile(inputFilePath);
+      var renderResult = vain.htmlRenderer(inputFilePath);
 
       renderResult.should.equal(expectedOuput);
     });
