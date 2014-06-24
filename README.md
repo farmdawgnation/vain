@@ -62,12 +62,19 @@ In this configuration, vain will operate on the response output produced by your
 ### Registering Snippets
 
 After you have vain integrated into your stack, you'll want to register snippets. Snippets take
-two arguments: a jQuery object `$`, and the DOM element the snippet was invoked on. So, let's
-start by registering a snippet named "page-title" that changes the title of a page to something
+five arguments:
+
+1. A jQuery object `$`
+2. The DOM element the snippet was invoked on.
+3. The current request object from express.
+4. The current response object from express.
+5. A hash of snippetParameters.
+
+So, let's start by registering a snippet named "page-title" that changes the title of a page to something
 meaningful.
 
 ```javascript
-vain.registerSnippet('page-title', function($, element) {
+vain.registerSnippet('page-title', function($, element, request, response, snippetParameters) {
   $(element).text("Welcome to vain.");
 });
 ```
@@ -105,7 +112,22 @@ need to do is to add a `data-vain` attribute with the name of our snippet to the
 ```
 
 Then, in the response that actually appears to the user we'll get "Welcome to vain." in the
-page title.
+page title. You can also pass in parameters to snippets. For example, if you had a snippet that
+did localization, you may want to pass in the localization key associated with a particular tag.
+
+```html
+<h1 data-vain="loc?key=page-header">My Awesome Header</h1>
+```
+
+The snippet is able to check its `snippetParameters` for the `key` value and make decisions about
+what to do based on that value. You can also use multiple parameters by using an ampersand.
+
+```html
+<h1 data-vain="my-awesome-snippet?a=2&b=3&c=1">Hi mom!</h1>
+```
+
+In the above example the `snippetParameters` will contain "2" at "a", "3" at key "b", and 1 at
+key "c".
 
 ## Vain API Documentation
 
