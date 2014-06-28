@@ -24,9 +24,10 @@ and you configured the vain router to use "views" as its `viewsFolder`, then it 
 "views/admin/users.html" and render it, processing any `data-vain` attributes it finds, then return that result
 to the client.
 
-Such a configuration would be accomplished by adding the following line to your app.js in your express app:
+Such a configuration would be accomplished by adding the following lines to your app.js in your express app:
 
 ```javascript
+app.engine('html', vain.renderFile);
 app.use('/', vain.router(app.get('views')));
 ```
 
