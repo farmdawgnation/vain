@@ -25,10 +25,11 @@ describe('Vain', function() {
 
     it('should pass in the entire matching node to a snippet', function(callback) {
       var startMarkup = '<a href="http://google.com" data-vain="test">Google <span>A search engine.</span></a>',
+          expectedMarkup = '<a href="http://google.com">Google <span>A search engine.</span></a>',
           snippetHandler = function($, element) {
             var passedInMarkup = $("<div />").append(element).html();
 
-            passedInMarkup.should.equal(startMarkup);
+            passedInMarkup.should.equal(expectedMarkup);
             callback();
           },
           renderResult = vain.render(startMarkup, {snippets: {'test': snippetHandler}});
