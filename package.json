@@ -25,8 +25,7 @@
   "dependencies": {
     "jsdom": "0.10.x",
     "jquery": "2.1.x",
-    "express": "4.4.x",
-    "fibers": "1.0.x"
+    "express": "4.4.x"
   },
   "devDependencies": {
     "mocha": "1.20.x",
