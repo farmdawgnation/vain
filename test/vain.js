@@ -16,108 +16,130 @@ describe('Vain', function() {
   });
 
   describe('.render', function() {
-    it('should return the same markup if no snippets were invoked', function() {
-      var startMarkup = '<a href="http://google.com">Google <span>A search engine.</span></a>',
-          renderResult = vain.render(startMarkup);
+    it('should return the same markup if no snippets were invoked', function(callback) {
+      var startMarkup = '<a href="http://google.com">Google <span>A search engine.</span></a>'
 
-      renderResult.should.equal(startMarkup);
+      vain.render(startMarkup, function(error, output) {
+        output.should.equal(startMarkup);
+        callback();
+      });
     });
 
     it('should pass in the entire matching node to a snippet', function(callback) {
       var startMarkup = '<a href="http://google.com" data-vain="test">Google <span>A search engine.</span></a>',
-          snippetHandler = function($, element) {
-            var passedInMarkup = $("<div />").append(element).html();
+          expectedMarkup = '<a href="http://google.com">Google <span>A search engine.</span></a>',
+          snippetHandler = function($, params, finished) {
+            var passedInMarkup = $("<div />").append(this).html();
 
-            passedInMarkup.should.equal(startMarkup);
+            passedInMarkup.should.equal(expectedMarkup);
             callback();
-          },
-          renderResult = vain.render(startMarkup, {snippets: {'test': snippetHandler}});
+            finished();
+          }
+
+      vain.render(startMarkup, {snippets: {'test': snippetHandler}}, function(error, output) {
+      });
     });
 
-    it('should return transformed node markup', function() {
+    it('should return transformed node markup', function(callback) {
       var startMarkup = '<a href="http://google.com" data-vain="test">Google</a>',
           expectedMarkup = '<a href="http://google.com" class="fancy">Google</a>',
-          snippetHandler = function($, element) {
-            $(element).addClass("fancy");
-          },
-          renderResult = vain.render(startMarkup, {snippets: {'test': snippetHandler}});
+          snippetHandler = function($, params, finished) {
+            $(this).addClass("fancy");
+            finished();
+          }
 
-      renderResult.should.equal(expectedMarkup);
+      vain.render(startMarkup, {snippets: {'test': snippetHandler}}, function(error, output) {
+        output.should.equal(expectedMarkup);
+        callback();
+      });
     });
 
-    it('should correctly transform nested markup', function() {
+    it('should correctly transform nested markup', function(callback) {
       var startMarkup = '<section data-vain="parent"><h1>I like robots.</h1> <p data-vain="child">I really enjoy robots.</p></section>',
           expectedMarkup = '<section class="cheese"><h1 class="pig">I like robots.</h1> <p class="sauce enjoy">I really enjoy robots.</p></section>';
 
-      var parentHandler = function($, element) {
-        $(element)
+      var parentHandler = function($, params, finished) {
+        $(this)
           .addClass("cheese")
           .find("h1")
             .addClass("pig")
             .end()
           .find("p")
             .addClass("sauce");
+
+        finished();
       }
 
-      var childHandler = function($, element) {
-        $(element).addClass("enjoy");
+      var childHandler = function($, params, finished) {
+        $(this).addClass("enjoy");
+        finished();
       }
 
-      var renderResult = vain.render(startMarkup, {snippets: {
+      vain.render(startMarkup, {snippets: {
         'parent': parentHandler,
         'child': childHandler
-      }});
-
-      renderResult.should.equal(expectedMarkup);
+      }}, function(error, output) {
+        output.should.equal(expectedMarkup);
+        callback();
+      });
     });
 
-    it('should run snippets from the global snippet registry', function() {
+    it('should run snippets from the global snippet registry', function(callback) {
       var startMarkup = '<a href="http://google.com" data-vain="globally-registered">Google</a>',
           expectedMarkup = '<a href="http://google.com" class="fancy">Google</a>',
-          snippetHandler = function($, element) {
-            $(element).addClass("fancy");
+          snippetHandler = function($, params, finished) {
+            $(this).addClass("fancy");
+            finished();
           };
 
       vain.registerSnippet("globally-registered", snippetHandler);
 
-      var renderResult = vain.render(startMarkup);
-
-      renderResult.should.equal(expectedMarkup);
+      vain.render(startMarkup, function(error, output) {
+        output.should.equal(expectedMarkup);
+        callback();
+      });
     });
 
     it('should pass params into snippets', function(callback) {
       var startMarkup = '<a href="http://google.com" data-vain="test?one=1&two=2">Google <span>A search engine.</span></a>',
-          snippetHandler = function($, element, req, res, params) {
+          snippetHandler = function($, params, finished) {
             params.one.should.equal("1");
             params.two.should.equal("2");
             callback();
-          },
-          renderResult = vain.render(startMarkup, {snippets: {'test': snippetHandler}});
+            finished();
+          };
+
+      vain.render(startMarkup, {snippets: {'test': snippetHandler}}, function() {});
     });
   });
 
   describe(".renderFile", function() {
-    it("should correctly render a full HTML file on the file system", function() {
+    it("should correctly render a full HTML file on the file system", function(callback) {
       var inputFilePath = './test/examples/render-input.html',
           expectedOuput = fs.readFileSync('./test/examples/render-output.html', 'utf8');
 
-      vain.registerSnippet('page-title', function($, element) {
-        $(element).text("Welcome to vain");
+      vain.registerSnippet('page-title', function($, params, finished) {
+        $(this).text("Welcome to vain");
+        finished();
       });
 
-      vain.registerSnippet("page-header", function($, element) {
-        $(element).text("Welcome to vain");
+      vain.registerSnippet("page-header", function($, params, finished) {
+        $(this).text("Welcome to vain");
+        finished();
       });
 
-      vain.registerSnippet("page-content", function($, element) {
-        $(element)
+      vain.registerSnippet("page-content", function($, params, finished) {
+        $(this)
           .attr("id", "content")
           .text("Welcome to vain, a view first templating engine / middleware for Node.");
+
+        finished();
       });
 
-      var renderResult = vain.renderFile(inputFilePath);
-
-      renderResult.should.equal(expectedOuput);
+      vain.renderFile(inputFilePath, function(error, output) {
+        output.should.equal(expectedOuput);
+        callback();
+      });
     });
   });
 
