@@ -12,9 +12,6 @@ your markup to invoke the function on that HTML element and its children.
 If you want to see it in action, you can look at the code in my [vain-test](https://github.com/farmdawgnation/vain-test)
 repository. Check out app.js for the good stuff.
 
-**Vain is currently in alpha. It may not function as you expect, or even function at all. Any
-help in finding a filing bugs is appreciated!**
-
 ## Using Vain
 
 Vain is ideally integrated by using the vain router. The vain router will search for HTML files in your views
@@ -33,21 +30,23 @@ app.use('/', vain.router(app.get('views')));
 
 ### Registering Snippets
 
-After you have vain integrated into your stack, you'll want to register snippets. Snippets take
-five arguments:
+After you have vain integrated into your stack, you'll want to register snippets. Some notes on
+snippets:
 
-1. A jQuery object `$`
-2. The DOM element the snippet was invoked on.
-3. The current request object from express.
-4. The current response object from express.
-5. A hash of snippetParameters.
+* The `this` keyword is bound to the current element you're rendering.
+* They take three arguments:
+  1. A jQuery object `$`
+  2. A hash of parameters, which will consist of any parameters passed in from the markup and
+     `request` and `response` which are the express request and response objects, respectively.
+  3. A `finished` callback which should be invoked when the snippet is done doing its thing.
 
 So, let's start by registering a snippet named "page-title" that changes the title of a page to something
 meaningful.
 
 ```javascript
-vain.registerSnippet('page-title', function($, element, request, response, snippetParameters) {
-  $(element).text("Welcome to vain.");
+vain.registerSnippet('page-title', function($, snippetParameters, finished) {
+  $(this).text("Welcome to vain.");
+  finished();
 });
 ```
 
@@ -109,8 +108,8 @@ Vain exposes the following methods:
   registry.
 * **unregisterSnippet(snippetName)** - Unregister a global snippet.
 * **render(input, options, fn)** - Render the `input` (a string) by finding all data-vain invocations
-  and executing the relevant snippets. If you provide a `fn` that `fn` will be called as a callback
-  upon completion. The following elements are supported in `options`:
+  and executing the relevant snippets. The `fn` callback will be invoked with the result upon completion.
+  The following elements are supported in `options`:
   * **snippets** - An object literal of snippet names to functions that only apply for this render
     invocation.
 * **renderFile(path, options, fn)** - Exactly the same as render, except that it operates on a file path.
