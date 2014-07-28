@@ -28,8 +28,8 @@ describe('Vain', function() {
     it('should pass in the entire matching node to a snippet', function(callback) {
       var startMarkup = '<a href="http://google.com" data-vain="test">Google <span>A search engine.</span></a>',
           expectedMarkup = '<a href="http://google.com">Google <span>A search engine.</span></a>',
-          snippetHandler = function($, element, request, response, params, finished) {
-            var passedInMarkup = $("<div />").append(element).html();
+          snippetHandler = function($, params, finished) {
+            var passedInMarkup = $("<div />").append(this).html();
 
             passedInMarkup.should.equal(expectedMarkup);
             callback();
@@ -43,8 +43,8 @@ describe('Vain', function() {
     it('should return transformed node markup', function(callback) {
       var startMarkup = '<a href="http://google.com" data-vain="test">Google</a>',
           expectedMarkup = '<a href="http://google.com" class="fancy">Google</a>',
-          snippetHandler = function($, element, request, response, params, finished) {
-            $(element).addClass("fancy");
+          snippetHandler = function($, params, finished) {
+            $(this).addClass("fancy");
             finished();
           }
 
@@ -58,8 +58,8 @@ describe('Vain', function() {
       var startMarkup = '<section data-vain="parent"><h1>I like robots.</h1> <p data-vain="child">I really enjoy robots.</p></section>',
           expectedMarkup = '<section class="cheese"><h1 class="pig">I like robots.</h1> <p class="sauce enjoy">I really enjoy robots.</p></section>';
 
-      var parentHandler = function($, element, request, response, params, finished) {
-        $(element)
+      var parentHandler = function($, params, finished) {
+        $(this)
           .addClass("cheese")
           .find("h1")
             .addClass("pig")
@@ -70,8 +70,8 @@ describe('Vain', function() {
         finished();
       }
 
-      var childHandler = function($, element, request, response, params, finished) {
-        $(element).addClass("enjoy");
+      var childHandler = function($, params, finished) {
+        $(this).addClass("enjoy");
         finished();
       }
 
@@ -87,8 +87,8 @@ describe('Vain', function() {
     it('should run snippets from the global snippet registry', function(callback) {
       var startMarkup = '<a href="http://google.com" data-vain="globally-registered">Google</a>',
           expectedMarkup = '<a href="http://google.com" class="fancy">Google</a>',
-          snippetHandler = function($, element, request, response, params, finished) {
-            $(element).addClass("fancy");
+          snippetHandler = function($, params, finished) {
+            $(this).addClass("fancy");
             finished();
           };
 
@@ -102,10 +102,11 @@ describe('Vain', function() {
 
     it('should pass params into snippets', function(callback) {
       var startMarkup = '<a href="http://google.com" data-vain="test?one=1&two=2">Google <span>A search engine.</span></a>',
-          snippetHandler = function($, element, req, res, params) {
+          snippetHandler = function($, params, finished) {
             params.one.should.equal("1");
             params.two.should.equal("2");
             callback();
+            finished();
           };
 
       vain.render(startMarkup, {snippets: {'test': snippetHandler}}, function() {});
@@ -117,18 +118,18 @@ describe('Vain', function() {
       var inputFilePath = './test/examples/render-input.html',
           expectedOuput = fs.readFileSync('./test/examples/render-output.html', 'utf8');
 
-      vain.registerSnippet('page-title', function($, element, request, response, params, finished) {
-        $(element).text("Welcome to vain");
+      vain.registerSnippet('page-title', function($, params, finished) {
+        $(this).text("Welcome to vain");
         finished();
       });
 
-      vain.registerSnippet("page-header", function($, element, request, response, params, finished) {
-        $(element).text("Welcome to vain");
+      vain.registerSnippet("page-header", function($, params, finished) {
+        $(this).text("Welcome to vain");
         finished();
       });
 
-      vain.registerSnippet("page-content", function($, element, request, response, params, finished) {
-        $(element)
+      vain.registerSnippet("page-content", function($, params, finished) {
+        $(this)
           .attr("id", "content")
           .text("Welcome to vain, a view first templating engine / middleware for Node.");
 
