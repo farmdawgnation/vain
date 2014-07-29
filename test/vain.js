@@ -144,12 +144,29 @@ describe('Vain', function() {
   });
 
   describe(".router", function() {
-    it("should dispatch for valid paths", function(done) {
+    it("should dispatch for valid html paths", function(done) {
       var testPath = '/render-input',
           router = vain.router("./test/examples"),
           res = {
             render: function(val) {
               val.should.equal('./test/examples/render-input.html');
+              done();
+            },
+
+            send: function(code) {
+              done("Template was not found.");
+            }
+          };
+
+      router.handle({ url: testPath, method: 'GET', path: testPath}, res);
+    });
+
+    it("should dispatch with custom extensions", function(done) {
+      var testPath = '/jade-example',
+          router = vain.router("./test/examples", ['jade']),
+          res = {
+            render: function(val) {
+              val.should.equal('./test/examples/jade-example.jade');
               done();
             },
 
