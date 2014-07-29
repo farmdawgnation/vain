@@ -2,7 +2,8 @@
 
 var chai = require('chai'),
     vain = require('./../lib/vain'),
-    fs = require('fs');
+    fs = require('fs'),
+    jade = require('jade');
 
 chai.should();
 
@@ -12,6 +13,7 @@ describe('Vain', function() {
     vain.unregisterSnippet.should.be.a('function');
     vain.render.should.be.a('function');
     vain.renderFile.should.be.a('function');
+    vain.renderFileWith.should.be.a('function');
     vain.__express.should.be.a('function');
   });
 
@@ -138,6 +140,38 @@ describe('Vain', function() {
 
       vain.renderFile(inputFilePath, function(error, output) {
         output.should.equal(expectedOuput);
+        callback();
+      });
+    });
+  });
+
+  describe(".renderFileWith", function() {
+    it("should correctly render a jade file on the file system", function(callback) {
+      var inputFilePath = './test/examples/jade-example.jade',
+          expectedOutput = fs.readFileSync('./test/examples/jade-expected-output.html', 'utf8');
+
+      vain.registerSnippet('page-title', function($, params, finished) {
+        $(this).text("Welcome to vain");
+        finished();
+      });
+
+      vain.registerSnippet("page-header", function($, params, finished) {
+        $(this).text("Welcome to vain");
+        finished();
+      });
+
+      vain.registerSnippet("page-content", function($, params, finished) {
+        $(this)
+          .attr("id", "content")
+          .text("Welcome to vain, a view first templating engine / middleware for Node.");
+
+        finished();
+      });
+
+      vain.renderFileWith(jade)(inputFilePath, function(error, output) {
+        // We add a newline here as a hack around the fact that jade won't and
+        // vim (which the samples are created with) does.
+        (output + '\n').should.equal(expectedOutput);
         callback();
       });
     });
