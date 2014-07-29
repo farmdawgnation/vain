@@ -197,7 +197,7 @@ describe('Vain', function() {
 
     it("should dispatch with custom extensions", function(done) {
       var testPath = '/jade-example',
-          router = vain.router("./test/examples", ['jade']),
+          router = vain.router("./test/examples", 'jade'),
           res = {
             render: function(val) {
               val.should.equal('./test/examples/jade-example.jade');
