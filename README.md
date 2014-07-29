@@ -28,6 +28,15 @@ app.engine('html', vain.renderFile);
 app.use('/', vain.router(app.get('views')));
 ```
 
+You can also use vain in conjunction with another template engine, such as jade! In this configuration, we instruct
+vain to consider jade files as templates and run them through jade before running them through the regular vain
+renderer.
+
+```javascript
+app.engine('jade', vain.renderFileWith('jade'));
+app.use('/', vain.router(app.get('views'), 'jade'));
+```
+
 ### Registering Snippets
 
 After you have vain integrated into your stack, you'll want to register snippets. Some notes on
@@ -113,8 +122,14 @@ Vain exposes the following methods:
   * **snippets** - An object literal of snippet names to functions that only apply for this render
     invocation.
 * **renderFile(path, options, fn)** - Exactly the same as render, except that it operates on a file path.
-* **router(viewsFolder)** - The vain router, which will work for any HTML file under your viewsFolder specified
-  when you create the router. Should be the last router in the chain.
+* **renderFileWith(preprocessor)** - Generates a rendering function that first runs templates through the
+  `preprocessor` specified, then runs them through vain. The `preprocessor` above may be a string name of the
+  module to include or an actual instance of the renderer module that you want to preprocess with.
+* **router(viewsFolder, viewsExtensions)** - The vain router, which will work for any HTML file under your
+  `viewsFolder` specified when you create the router. You can additionally specify what extension(s) should
+  be used for templates. You can specify a single extension as a string or specify multiple extensions with an
+  array. If left unspecified, it will default to just checking for files with an html extension.
+  This should be the last router in the chain.
 
 ## Who am I?
 

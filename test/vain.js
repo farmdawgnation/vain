@@ -2,7 +2,8 @@
 
 var chai = require('chai'),
     vain = require('./../lib/vain'),
-    fs = require('fs');
+    fs = require('fs'),
+    jade = require('jade');
 
 chai.should();
 
@@ -12,6 +13,7 @@ describe('Vain', function() {
     vain.unregisterSnippet.should.be.a('function');
     vain.render.should.be.a('function');
     vain.renderFile.should.be.a('function');
+    vain.renderFileWith.should.be.a('function');
     vain.__express.should.be.a('function');
   });
 
@@ -143,13 +145,62 @@ describe('Vain', function() {
     });
   });
 
+  describe(".renderFileWith", function() {
+    it("should correctly render a jade file on the file system", function(callback) {
+      var inputFilePath = './test/examples/jade-example.jade',
+          expectedOutput = fs.readFileSync('./test/examples/jade-expected-output.html', 'utf8');
+
+      vain.registerSnippet('page-title', function($, params, finished) {
+        $(this).text("Welcome to vain");
+        finished();
+      });
+
+      vain.registerSnippet("page-header", function($, params, finished) {
+        $(this).text("Welcome to vain");
+        finished();
+      });
+
+      vain.registerSnippet("page-content", function($, params, finished) {
+        $(this)
+          .attr("id", "content")
+          .text("Welcome to vain, a view first templating engine / middleware for Node.");
+
+        finished();
+      });
+
+      vain.renderFileWith(jade)(inputFilePath, function(error, output) {
+        // We add a newline here as a hack around the fact that jade won't and
+        // vim (which the samples are created with) does.
+        (output + '\n').should.equal(expectedOutput);
+        callback();
+      });
+    });
+  });
+
   describe(".router", function() {
-    it("should dispatch for valid paths", function(done) {
+    it("should dispatch for valid html paths", function(done) {
       var testPath = '/render-input',
           router = vain.router("./test/examples"),
           res = {
             render: function(val) {
               val.should.equal('./test/examples/render-input.html');
+              done();
+            },
+
+            send: function(code) {
+              done("Template was not found.");
+            }
+          };
+
+      router.handle({ url: testPath, method: 'GET', path: testPath}, res);
+    });
+
+    it("should dispatch with custom extensions", function(done) {
+      var testPath = '/jade-example',
+          router = vain.router("./test/examples", 'jade'),
+          res = {
+            render: function(val) {
+              val.should.equal('./test/examples/jade-example.jade');
               done();
             },
 
