@@ -16,15 +16,15 @@
   "bugs":{
     "url":"https://github.com/farmdawgnation/vain/issues"
   },
-  "homepage": "https://github.com/farmdawgnation/vain",
-  "dependencies": {
-    "jsdom": "0.11.x",
-    "jquery": "2.1.x",
-    "express": "4.7.x"
+  "homepage":"https://github.com/farmdawgnation/vain",
+  "dependencies":{
+    "jsdom":"0.11.1",
+    "jquery":"2.1.x",
+    "express":"4.8.3"
   },
   "devDependencies":{
     "mocha":"1.20.x",
     "chai":"1.9.x",
-    "jade": "*"
+    "jade":"*"
   }
 }
